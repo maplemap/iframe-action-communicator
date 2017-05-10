@@ -18,3 +18,4 @@ rules:
   indent: 2
   comma-dangle: 0
   no-unused-vars: 1
+  consistent-return: 0
