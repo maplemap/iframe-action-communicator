@@ -96,12 +96,29 @@
 </head>
 <body>
   <h1>Parent Window</h1>
-  <p>Send Message: <button id="messageBtn">Hi there iframe</button></p>
+  <p>Send Message: <button id="message_button">Hi there iframe</button></p>
   <p>Got Message:</p>
   <div id="results"></div>
   <br/>
   <iframe src="iframe.html" id="iframe" style="width: 450px; height: 200px;"></iframe>
 
-  <script src="../dist/iframeCommunicator.js"></script>
+  <script src="../dist/iframe-action-communicator.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var iac = new IframeActionCommunicator('iframe');
+
+      var $messageBtn = document.getElementById('message_button');
+      $messageBtn.addEventListener('click', function() {
+        iac.post({
+          action: 'messageFromParent',
+          data: 'Hello I\'m parent'
+        });
+      }, false);
+
+      iac.subscribeActionToHandler('messageFromIframe', function(data) {
+        console.log('messageFromIframe:', data);
+      })
+    });
+  </script>
 </body>
 </html>
