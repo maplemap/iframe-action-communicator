@@ -1,8 +1,8 @@
 {
-  "name": "iFrameCommunicator",
+  "name": "iframe-action-communicator",
   "version": "0.0.1",
-  "description": "js communicator between parent window and iframe",
-  "main": "./dist/iframeCommunicator.js",
+  "description": "js action communicator between parent window and iframe",
+  "main": "./dist/iframe-action-communicator.js",
   "scripts": {
     "start": "npm run dev",
     "dev": "npm test -- -w",
