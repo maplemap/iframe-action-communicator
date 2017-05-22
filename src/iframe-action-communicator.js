@@ -26,13 +26,29 @@ function JSONparse(value) {
  */
 class IframeActionCommunicator {
   constructor(iFrameID) {
-    this.$iFrame = null;
     this.registeredActions = {};
+    this.$iFrame = null;
+    this.parentInstance = false;
 
     if (iFrameID) {
       this.$iFrame = document.getElementById(iFrameID);
+      if (this.$iFrame) {
+        this.parentInstance = true;
+      } else {
+        return console.error(`${this.constructor.name}: Iframe with '${iFrameID}' id wasn't founded`);
+      }
     }
 
+    this.initListener();
+  }
+
+
+  /**
+   * @param {string} name
+   * @param {function} callback
+   * @return {IFrameCommunicator}
+   */
+  initListener() {
     const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
     const messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
     const listener = window[eventMethod];
@@ -45,9 +61,10 @@ class IframeActionCommunicator {
 
       if (this.registeredActions[action]) {
         if (message.constructor === Object) {
-          this.registeredActions[message.action](message.data);
-        } else if (typeof message === 'string') {
-          this.registeredActions[action]();
+          return this.registeredActions[message.action](message.data);
+        }
+        if (typeof message === 'string') {
+          return this.registeredActions[action]();
         }
       } else {
         console.error(`${this.constructor.name}: Any handler doesn't subscribe on '${action}' action`);
@@ -57,18 +74,17 @@ class IframeActionCommunicator {
 
 
   /**
-   * @param {string} name
-   * @param {function} callback
-   * @return {IFrameCommunicator}
+   * @param {string} message
+   * @param {object} name
    */
-  post(message) {
+  send(message) {
     if (!message || (typeof message !== 'string' && message.constructor !== Object)) {
       return console.error(`${this.constructor.name}: post argument doesn't must empty and type me be 'string' or 'object'`);
     }
 
     const stringMessage = JSONstringify(message);
 
-    if (this.$iFrame) {
+    if (this.parentInstance) {
       this.$iFrame.contentWindow.postMessage(stringMessage, '*');
     } else {
       window.parent.postMessage(stringMessage, '*');
@@ -79,9 +95,8 @@ class IframeActionCommunicator {
   /**
    * @param {action} name
    * @param {function} handler
-   * @return {IFrameCommunicator}
    */
-  subscribeActionToHandler(action, handler) {
+  on(action, handler) {
     this.registeredActions[action] = handler;
   }
 }

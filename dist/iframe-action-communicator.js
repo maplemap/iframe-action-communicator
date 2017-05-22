@@ -32,37 +32,22 @@ function JSONparse(value) {
 
 var IframeActionCommunicator = function () {
   function IframeActionCommunicator(iFrameID) {
-    var _this = this;
-
     _classCallCheck(this, IframeActionCommunicator);
 
-    this.$iFrame = null;
     this.registeredActions = {};
+    this.$iFrame = null;
+    this.parentInstance = false;
 
     if (iFrameID) {
       this.$iFrame = document.getElementById(iFrameID);
+      if (this.$iFrame) {
+        this.parentInstance = true;
+      } else {
+        return console.error(this.constructor.name + ': Iframe with \'' + iFrameID + '\' id wasn\'t founded');
+      }
     }
 
-    var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
-    var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
-    var listener = window[eventMethod];
-
-    listener(messageEvent, function (e) {
-      var message = JSONparse(e.data);
-      var action = message.constructor === Object ? message.action : message;
-
-      if (!action) return console.error(_this.constructor.name + ': Action mustn\'t be empty. Please, pass action like a string or like an object in key \'action\'');
-
-      if (_this.registeredActions[action]) {
-        if (message.constructor === Object) {
-          _this.registeredActions[message.action](message.data);
-        } else if (typeof message === 'string') {
-          _this.registeredActions[action]();
-        }
-      } else {
-        console.error(_this.constructor.name + ': Any handler doesn\'t subscribe on \'' + action + '\' action');
-      }
-    }, false);
+    this.initListener();
   }
 
   /**
@@ -73,15 +58,48 @@ var IframeActionCommunicator = function () {
 
 
   _createClass(IframeActionCommunicator, [{
-    key: 'post',
-    value: function post(message) {
+    key: 'initListener',
+    value: function initListener() {
+      var _this = this;
+
+      var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+      var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
+      var listener = window[eventMethod];
+
+      listener(messageEvent, function (e) {
+        var message = JSONparse(e.data);
+        var action = message.constructor === Object ? message.action : message;
+
+        if (!action) return console.error(_this.constructor.name + ': Action mustn\'t be empty. Please, pass action like a string or like an object in key \'action\'');
+
+        if (_this.registeredActions[action]) {
+          if (message.constructor === Object) {
+            return _this.registeredActions[message.action](message.data);
+          }
+          if (typeof message === 'string') {
+            return _this.registeredActions[action]();
+          }
+        } else {
+          console.error(_this.constructor.name + ': Any handler doesn\'t subscribe on \'' + action + '\' action');
+        }
+      }, false);
+    }
+
+    /**
+     * @param {string} message
+     * @param {object} name
+     */
+
+  }, {
+    key: 'send',
+    value: function send(message) {
       if (!message || typeof message !== 'string' && message.constructor !== Object) {
         return console.error(this.constructor.name + ': post argument doesn\'t must empty and type me be \'string\' or \'object\'');
       }
 
       var stringMessage = JSONstringify(message);
 
-      if (this.$iFrame) {
+      if (this.parentInstance) {
         this.$iFrame.contentWindow.postMessage(stringMessage, '*');
       } else {
         window.parent.postMessage(stringMessage, '*');
@@ -91,12 +109,11 @@ var IframeActionCommunicator = function () {
     /**
      * @param {action} name
      * @param {function} handler
-     * @return {IFrameCommunicator}
      */
 
   }, {
-    key: 'subscribeActionToHandler',
-    value: function subscribeActionToHandler(action, handler) {
+    key: 'on',
+    value: function on(action, handler) {
       this.registeredActions[action] = handler;
     }
   }]);
