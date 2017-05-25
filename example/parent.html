@@ -109,13 +109,13 @@
 
       var $messageBtn = document.getElementById('message_button');
       $messageBtn.addEventListener('click', function() {
-        iac.post({
+        iac.send({
           action: 'messageFromParent',
           data: 'Hello I\'m parent'
         });
       }, false);
 
-      iac.subscribeActionToHandler('messageFromIframe', function(data) {
+      iac.on('messageFromIframe', function(data) {
         console.log('messageFromIframe:', data);
       })
     });
