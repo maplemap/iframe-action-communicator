@@ -3,6 +3,13 @@
   "version": "0.0.1",
   "description": "js action communicator between parent window and iframe",
   "main": "./dist/iframe-action-communicator.js",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/maplemap/iframe-action-communicator"
+  },
+  "bugs": {
+    "url" : "https://github.com/maplemap/iframe-action-communicator/issues"
+  },
   "scripts": {
     "start": "npm run dev",
     "dev": "npm test -- -w",
