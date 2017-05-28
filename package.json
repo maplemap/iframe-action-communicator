@@ -1,8 +1,8 @@
 {
   "name": "iframe-action-communicator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "js action communicator between parent window and iframe",
-  "main": "./dist/iframe-action-communicator.js",
+  "main": "index.js",
   "repository": {
     "type" : "git",
     "url" : "https://github.com/maplemap/iframe-action-communicator"
