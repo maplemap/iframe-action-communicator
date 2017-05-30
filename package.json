@@ -1,6 +1,6 @@
 {
   "name": "iframe-action-communicator",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "js action communicator between parent window and iframe",
   "main": "index.js",
   "repository": {
@@ -32,8 +32,5 @@
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.2.0",
     "mocha": "^3.1.2"
-  },
-  "files": [
-    "dist"
-  ]
+  }
 }
