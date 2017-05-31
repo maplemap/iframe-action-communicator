@@ -1,1 +1,1 @@
-require('./dist/transition.js');
+require('./dist/iframe-action-communicator.js');
