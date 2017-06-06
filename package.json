@@ -1,14 +1,14 @@
 {
   "name": "iframe-action-communicator",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "js action communicator between parent window and iframe",
   "main": "index.js",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/maplemap/iframe-action-communicator"
+    "type": "git",
+    "url": "https://github.com/maplemap/iframe-action-communicator"
   },
   "bugs": {
-    "url" : "https://github.com/maplemap/iframe-action-communicator/issues"
+    "url": "https://github.com/maplemap/iframe-action-communicator/issues"
   },
   "scripts": {
     "start": "npm run dev",
@@ -16,7 +16,7 @@
     "init": "mkdir dist",
     "clean": "rm -rf dist",
     "prebuild": "npm run clean && npm run init",
-    "build": "babel ./src -d ./dist --ignore test.js",
+    "build": "babel ./src -d ./dist --ignore test.js && node build.js",
     "pretest": "npm run build",
     "test": "mocha --compilers js:babel-core/register ./src/**/*.test.js",
     "test:single": "mocha --compilers js:babel-core/register"
@@ -31,6 +31,7 @@
     "chai": "^3.5.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.2.0",
+    "google-closure-compiler-js": "^20170521.0.0",
     "mocha": "^3.1.2"
   }
 }
