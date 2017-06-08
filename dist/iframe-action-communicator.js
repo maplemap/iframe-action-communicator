@@ -83,6 +83,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var listener = window[eventMethod];
 
         listener(messageEvent, function (e) {
+          if (e.source === window) return; // check of sending of the message to itself
+
           var message = JSONparse(e.data);
           var action = message.constructor === Object ? message.action : message;
 

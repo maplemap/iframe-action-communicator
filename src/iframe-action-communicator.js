@@ -67,10 +67,14 @@
       const listener = window[eventMethod];
 
       listener(messageEvent, (e) => {
+        if (e.source === window) return; // check of sending of the message to itself
+
         const message = JSONparse(e.data);
         const action = (message.constructor === Object) ? message.action : message;
 
-        if (!action) return console.error(`${this.constructor.name}: Action mustn't be empty. Please, pass action like a string or like an object in key 'action'`);
+        if (!action) {
+          return console.error(`${this.constructor.name}: Action mustn't be empty. Please, pass action like a string or like an object in key 'action'`);
+        }
 
         if (this.registeredActions[action]) {
           if (message.constructor === Object) {
