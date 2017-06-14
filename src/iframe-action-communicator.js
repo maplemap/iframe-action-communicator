@@ -6,12 +6,12 @@
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
-    module.exports = factory();
+    module.exports = factory(root);
   } else {
     // Browser globals (root is window)
-    root.IframeActionCommunicator = factory();
+    root.IframeActionCommunicator = factory(root);
   }
-}(this, () => {
+}(this, (root) => {
   function JSONstringify(value) {
     try {
       return JSON.stringify(value);
@@ -27,6 +27,8 @@
       return false;
     }
   }
+
+  const win = root || global.window;
 
   /**
    * @class IframeActionCommunicator
@@ -44,7 +46,7 @@
       this.parentInstance = false;
 
       if (iFrameID) {
-        this.$iFrame = document.getElementById(iFrameID);
+        this.$iFrame = win.document.getElementById(iFrameID);
         if (this.$iFrame) {
           this.parentInstance = true;
         } else {
@@ -64,10 +66,10 @@
     initListener() {
       const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
       const messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
-      const listener = window[eventMethod];
 
-      listener(messageEvent, (e) => {
-        if (e.source === window) return; // check of sending of the message to itself
+      win[eventMethod](messageEvent, (e) => {
+        console.log('event', e);
+        if (e.source === win) return; // check of sending of the message to itself
 
         const message = JSONparse(e.data);
         const action = (message.constructor === Object) ? message.action : message;
@@ -104,7 +106,7 @@
       if (this.parentInstance) {
         this.$iFrame.contentWindow.postMessage(stringMessage, '*');
       } else {
-        window.parent.postMessage(stringMessage, '*');
+        win.parent.postMessage(stringMessage, '*');
       }
     }
 

@@ -14,12 +14,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
-    module.exports = factory();
+    module.exports = factory(root);
   } else {
     // Browser globals (root is window)
-    root.IframeActionCommunicator = factory();
+    root.IframeActionCommunicator = factory(root);
   }
-})(undefined, function () {
+})(undefined, function (root) {
   function JSONstringify(value) {
     try {
       return JSON.stringify(value);
@@ -35,6 +35,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       return false;
     }
   }
+
+  var win = root || global.window;
 
   /**
    * @class IframeActionCommunicator
@@ -55,7 +57,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       this.parentInstance = false;
 
       if (iFrameID) {
-        this.$iFrame = document.getElementById(iFrameID);
+        this.$iFrame = win.document.getElementById(iFrameID);
         if (this.$iFrame) {
           this.parentInstance = true;
         } else {
@@ -80,15 +82,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
         var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
-        var listener = window[eventMethod];
 
-        listener(messageEvent, function (e) {
-          if (e.source === window) return; // check of sending of the message to itself
+        win[eventMethod](messageEvent, function (e) {
+          console.log('event', e);
+          if (e.source === win) return; // check of sending of the message to itself
 
           var message = JSONparse(e.data);
           var action = message.constructor === Object ? message.action : message;
 
-          if (!action) return console.error(_this.constructor.name + ': Action mustn\'t be empty. Please, pass action like a string or like an object in key \'action\'');
+          if (!action) {
+            return console.error(_this.constructor.name + ': Action mustn\'t be empty. Please, pass action like a string or like an object in key \'action\'');
+          }
 
           if (_this.registeredActions[action]) {
             if (message.constructor === Object) {
@@ -120,7 +124,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         if (this.parentInstance) {
           this.$iFrame.contentWindow.postMessage(stringMessage, '*');
         } else {
-          window.parent.postMessage(stringMessage, '*');
+          win.parent.postMessage(stringMessage, '*');
         }
       }
 
