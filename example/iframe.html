@@ -57,6 +57,10 @@
       position:fixed;
     }
 
+    .results {
+      margin-bottom: 5px;
+    }
+
     @media print, screen and (max-width: 960px) {
       header, section, footer {
         float:none;
@@ -97,7 +101,7 @@
 <body>
   <h1>Hello there, i'm an iframe</h1>
   <p>Send Message: <button id="message_button">Hi parent</button></p>
-  <p>Got Message:</p>
+  <p class="results">Got Message:</p>
   <div id="results"></div>
 
   <script src="../dist/iframe-action-communicator.min.js"></script>
@@ -106,14 +110,22 @@
       var iac = new IframeActionCommunicator();
 
       var $messageBtn = document.getElementById('message_button');
+      var $resultContainer = document.getElementById('results');
+
       $messageBtn.addEventListener('click', function() {
+        var d = new Date();
+        var datetext = d.toTimeString();
+        datetext = datetext.split(' ')[0];
+
         iac.send({
           action: 'messageFromIframe',
-          data: 'Hello, I\'m Iframe'
+          data: 'Hello, I\'m Iframe and I sent message at ' + datetext + ' o\'clock'
         });
       }, false);
 
       iac.on('messageFromParent', function(data) {
+        $resultContainer.innerHTML = data;
+
         console.log('messageFromIframe:', data);
       })
     });
