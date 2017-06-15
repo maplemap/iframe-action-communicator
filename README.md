@@ -1,7 +1,7 @@
 # iframe-action-communicator
 
 It's module for communicate parent with iframe and vice versa. So, it's very easy way to start events on the opposite side. 
-The only thing that will be necessary it's object with name of action and data (if you want)<br>
+The only thing that will be necessary it's object or string with name of action and data (if you want)<br>
 
 one side
 ---
@@ -79,3 +79,7 @@ iframe.on('messageFromParent', function(data) {
   // do something...
 })
 ```
+
+## License
+
+MIT
