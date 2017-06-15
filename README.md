@@ -1,6 +1,6 @@
 # iframe-action-communicator
 
-It's module for communicate parent with iframe and vice versa. So, it's very easy way to start events on the opposite side. 
+It's module for communicate parent with iframe and vice versa. So, it's very easy way to start events on the opposite side.
 The only thing that will be necessary it's object or string with name of action and data (if you want)<br>
 
 one side
@@ -26,7 +26,7 @@ iac.on('somePowerfullAction', (data) => {
 ```
 
 That's all! It's so easy, isn't it? <br>
-Below you will be able to see more details and surely look at an [Demo](https://www.google.com).
+Below you will be able to see more details and surely look at an [Demo](https://maplemap.github.io/iframe-action-communicator/example/parent.html).
  <br>
  <br>
 
@@ -38,7 +38,7 @@ npm:
 ```bash
 $ npm install iframe-action-communicator
 ```
-or 
+or
 ```html
 <script src="path/to/iframe-action-communicator/dist/iframe-action-communicator.min.js"></script>
 ```
