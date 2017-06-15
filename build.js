@@ -1,7 +1,7 @@
 const fs = require('fs');
 const compile = require('google-closure-compiler-js').compile;
 
-const fileIn = './src/iframe-action-communicator.js';
+const fileIn = './dist/iframe-action-communicator.js';
 const fileOut = './dist/iframe-action-communicator.min.js';
 
 console.info('Compiling... 😤');

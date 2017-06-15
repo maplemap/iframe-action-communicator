@@ -30,15 +30,6 @@
 
   const win = root || global.window;
 
-  /**
-   * @class IframeActionCommunicator
-   * @example
-   * ```
-   * const com = new IFrameCommunicator();
-   * com.on('ready', () => document.querySelector('root').style.backgroundColor = 'blue');
-   * com.ready();
-   * ```
-   */
   class IframeActionCommunicator {
     constructor(iFrameID) {
       this.registeredActions = {};
@@ -58,17 +49,11 @@
     }
 
 
-    /**
-     * @param {string} name
-     * @param {function} callback
-     * @return {IFrameCommunicator}
-     */
     initListener() {
       const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
       const messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
 
       win[eventMethod](messageEvent, (e) => {
-        console.log('event', e);
         if (e.source === win) return; // check of sending of the message to itself
 
         const message = JSONparse(e.data);
@@ -94,7 +79,6 @@
 
     /**
      * @param {string} message
-     * @param {object} name
      */
     send(message) {
       if (!message || (typeof message !== 'string' && message.constructor !== Object)) {

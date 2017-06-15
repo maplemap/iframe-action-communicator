@@ -38,16 +38,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var win = root || global.window;
 
-  /**
-   * @class IframeActionCommunicator
-   * @example
-   * ```
-   * const com = new IFrameCommunicator();
-   * com.on('ready', () => document.querySelector('root').style.backgroundColor = 'blue');
-   * com.ready();
-   * ```
-   */
-
   var IframeActionCommunicator = function () {
     function IframeActionCommunicator(iFrameID) {
       _classCallCheck(this, IframeActionCommunicator);
@@ -68,13 +58,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       this.initListener();
     }
 
-    /**
-     * @param {string} name
-     * @param {function} callback
-     * @return {IFrameCommunicator}
-     */
-
-
     _createClass(IframeActionCommunicator, [{
       key: 'initListener',
       value: function initListener() {
@@ -84,7 +67,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
 
         win[eventMethod](messageEvent, function (e) {
-          console.log('event', e);
           if (e.source === win) return; // check of sending of the message to itself
 
           var message = JSONparse(e.data);
@@ -109,7 +91,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       /**
        * @param {string} message
-       * @param {object} name
        */
 
     }, {
