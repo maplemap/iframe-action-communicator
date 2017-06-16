@@ -1,6 +1,6 @@
 {
   "name": "iframe-action-communicator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "js action communicator between parent window and iframe",
   "main": "./dist/iframe-action-communicator.min.js",
   "repository": {
