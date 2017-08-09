@@ -1,5 +1,7 @@
 # iframe-action-communicator
 
+[![NPM](https://nodei.co/npm/iframe-action-communicator.png)](https://nodei.co/npm/iframe-action-communicator/)
+
 It's module for communicate parent with iframe and vice versa. So, it's very easy way to start events on the opposite side.
 The only thing that will be necessary it's object or string with name of action and data (if you want)<br>
 
