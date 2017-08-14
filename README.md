@@ -1,4 +1,4 @@
-# iframe-action-communicator ([demo](https://maplemap.github.io/iframe-action-communicator/example/parent.html))
+# iframe-action-communicator ([demo link](https://maplemap.github.io/iframe-action-communicator/example/parent.html))
 
 [![NPM](https://nodei.co/npm/iframe-action-communicator.png)](https://nodei.co/npm/iframe-action-communicator/)
 
